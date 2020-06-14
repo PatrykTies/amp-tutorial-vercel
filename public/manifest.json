@@ -1,6 +1,6 @@
 {
-  "short_name": "My page",
-  "name": "My fantastic page",
+  "short_name": "FavorBee",
+  "name": "Where Bees work together",
   "icons": [
     {
       "src": "/static/images/icons-192.png",

@@ -1,25 +1,47 @@
-import Layout from '../components/Layout'
-import AmpState from '../components/amp/AmpState'
-import AmpScript from '../components/amp/AmpScript'
+import Layout from "../components/Layout";
+import AmpState from "../components/amp/AmpState";
+import AmpScript from "../components/amp/AmpScript";
 import {
   AmpIncludeAmpList,
-  AmpIncludeAmpCarousel,
-} from '../components/amp/AmpCustomElement'
+  AmpIncludeAmpCarousel
+} from "../components/amp/AmpCustomElement";
 
-export const config = { amp: true }
+export const config = { amp: true };
 
-const Home = (props) => (
+/**  @see https://amp.dev/documentation/guides-and-tutorials/develop/style_and_layout/art_direction/
+*/
+const Home = props => (
   <>
     <Layout
       title="Welcome to AMP"
       description="Learn how to build an AMP First with Next.js."
     >
       <main>
-        <h1 className="title">Welcome to AMP ⚡</h1>
-        <p className="description">
-          To get started, edit <code>pages/index.js</code> and save to reload.
-        </p>
-
+        <section className="banner">
+          <h1 className="title">Welcome to AMP ⚡</h1>
+          <p className="description">
+            To get started, edit <code>pages/index.js</code> and save to reload.
+          </p>
+          <amp-img
+            src="/static/images/hero.jpg"
+            alt="hero image"
+            height="750"
+            width="1500"
+            layout="intrinsic"
+          ></amp-img>
+          <amp-img
+            src="/static/images/hero.jpg" //default fallback img
+            alt="hero image"
+            height="500"
+            width="1000"
+            layout="responsive"
+            srcset="/static/inline-examples/images/hummingbird-wide.jpg 640w,
+            /static/inline-examples/images/hummingbird-narrow.jpg 320w"
+            sizes="(min-width: 650px) 50vw, 100vw"
+          >
+            >
+          </amp-img>
+        </section>
         <section className="hero">
           <a href="https://nextjs.org/learn/basics/getting-started">
             <h3>Getting Started &rarr;</h3>
@@ -38,7 +60,7 @@ const Home = (props) => (
         <section>
           <h3>Using AMP Components</h3>
           <p>
-            You can import AMP components using <code>next/head</code>. Checkout{' '}
+            You can import AMP components using <code>next/head</code>. Checkout{" "}
             <code>components/amp/AmpCustomElement</code> for a simple way to
             import AMP components. Once the component is imported, you can use
             it like any other HTML element.
@@ -71,12 +93,12 @@ const Home = (props) => (
         <section>
           <h3>amp-bind & amp-state</h3>
           <p>
-            It's no problem to use <code>amp-bind</code> and{' '}
+            It's no problem to use <code>amp-bind</code> and{" "}
             <code>amp-state</code> with Next.js. There are two things to be
             aware of:
             <ol>
               <li>
-                The <code>[...]</code> binding syntax{' '}
+                The <code>[...]</code> binding syntax{" "}
                 <code>[text]="myStateVariable"</code>is not supported in JSX.
                 Use <code>data-amp-bind-text="myStateVariable"</code> instead.
               </li>
@@ -91,9 +113,9 @@ const Home = (props) => (
   </script>
 </amp-state>`}</pre>
                 Instead you need to use <code>dangerouslySetInnerHTML</code> to
-                initialize the string. can use the{' '}
+                initialize the string. can use the{" "}
                 <code>/components/amp/AmpState.js</code> component to see how it
-                works. The same approach works for <code>amp-access</code> and{' '}
+                works. The same approach works for <code>amp-access</code> and{" "}
                 <code>amp-consent</code> as well
               </li>
             </ol>
@@ -102,7 +124,7 @@ const Home = (props) => (
 
           <AmpState id="myState">
             {{
-              message: 'Hello World',
+              message: "Hello World"
             }}
           </AmpState>
           <button
@@ -119,7 +141,7 @@ const Home = (props) => (
           <h3>amp-list & amp-mustache</h3>
           <p>
             Mustache templates conflict with JSX and it's template literals need
-            to be escaped. A simple approach is to escape them via back ticks:{' '}
+            to be escaped. A simple approach is to escape them via back ticks:{" "}
             <code>src=&#123;`&#123;&#123;imageUrl&#125;&#125;`&#125;</code>.
           </p>
 
@@ -144,10 +166,10 @@ const Home = (props) => (
         <section>
           <h3>amp-script</h3>
           <p>
-            Checkout the{' '}
+            Checkout the{" "}
             <a href="https://amp.dev/documentation/components/amp-script/">
               amp-script
-            </a>{' '}
+            </a>{" "}
             helper here: <code>components/amp/AmpScript.js</code> for embedding
             custom JavaScript.
           </p>
@@ -161,12 +183,12 @@ const Home = (props) => (
 
           <p>
             The helper also supports embedding inline scripts. Good to know:
-            Next.js uses{' '}
+            Next.js uses{" "}
             <a href="https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer">
               AMP Optimizer
-            </a>{' '}
+            </a>{" "}
             under the hood, which automatically adds the needed script hashes
-            for{' '}
+            for{" "}
             <a href="https://amp.dev/documentation/components/amp-script/#load-javascript-from-a-local-element">
               inline amp-scripts
             </a>
@@ -190,7 +212,7 @@ const Home = (props) => (
     <style jsx>{`
       code,
       pre {
-        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
           Courier, monospace;
         background: #f2f2f2;
         padding: 2px 3px;
@@ -230,24 +252,24 @@ const Home = (props) => (
       }
     `}</style>
   </>
-)
+);
 
 // amp-script requires absolute URLs, so we create a property `host` which we can use to calculate the script URL.
 export async function getServerSideProps({ req }) {
   // WARNING: This is a generally unsafe application unless you're deploying to a managed platform like Vercel.
   // Be sure your load balancer is configured to not allow spoofed host headers.
-  return { props: { host: `${getProtocol(req)}://${req.headers.host}` } }
+  return { props: { host: `${getProtocol(req)}://${req.headers.host}` } };
 }
 
 function getProtocol(req) {
   if (req.connection.encrypted) {
-    return 'https'
+    return "https";
   }
-  const forwardedProto = req.headers['x-forwarded-proto']
+  const forwardedProto = req.headers["x-forwarded-proto"];
   if (forwardedProto) {
-    return forwardedProto.split(/\s*,\s*/)[0]
+    return forwardedProto.split(/\s*,\s*/)[0];
   }
-  return 'http'
+  return "http";
 }
 
-export default Home
+export default Home;
